@@ -1,0 +1,7 @@
+- name: Open digdag web port.
+  firewalld:
+    port: 65432/tcp
+    permanent: true
+    zone: public
+    state: enabled
+  notify: reload firewalld

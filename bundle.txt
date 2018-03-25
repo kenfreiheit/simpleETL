@@ -1,0 +1,7 @@
+cd /opt/embulk/bundle
+# modify Gemfile
+
+gem 'gem-name'
+gem 'gem-name', :path => 'path include .gemspec'
+
+embulk bundle 

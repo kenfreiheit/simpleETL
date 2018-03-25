@@ -1,0 +1,42 @@
+---
+- name: Create embulk group
+  group:
+    name: "{{ embulk_group }}"
+    state: present
+
+- name: Create embulk user
+  user:
+    name: "{{ embulk_user }}"
+    group: "{{ embulk_group }}"
+    state: present
+    system: yes
+
+- name: Ensure embulk directories exist.
+  file:
+    path: "{{ item }}"
+    owner: "{{ embulk_user }}"
+    group: "{{ embulk_group }}"
+    state: directory
+    mode: 0700
+  with_items:
+    - "{{ embulk_dir }}"
+    
+- name: Ensure embulk are installed.
+  get_url:
+    url: https://dl.embulk.org/embulk-latest.jar
+    dest: /usr/local/bin/embulk
+    mode: a+x
+
+- name: Check plugins directory.
+  stat:
+    path: "{{ embulk_dir }}/{{ embulk_plugin_dir }}"
+  register: plugin_dir
+
+- name: Make plugins bundle directory.
+  shell: "/usr/local/bin/embulk mkbundle {{ embulk_plugin_dir }}"
+  args:
+    chdir: "{{ embulk_dir }}"
+  become_user: embulk  
+  when:
+    - plugin_dir.stat.exists
+    - plugin_dir.stat.isdir

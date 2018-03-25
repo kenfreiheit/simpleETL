@@ -1,0 +1,50 @@
+---
+- name: Create digdag group
+  group:
+    name: "{{ digdag_group }}"
+    state: present
+
+- name: Create digdag user
+  user:
+    name: "{{ digdag_user }}"
+    group: "{{ digdag_group }}"
+    state: present
+    system: yes
+
+- name: Ensure digdag directories exist.
+  file:
+    path: "{{ item }}"
+    owner: "{{ digdag_user }}"
+    group: "{{ digdag_group }}"
+    state: directory
+    mode: 0700
+  with_items:
+    - "{{ digdag_log_dir }}/accesslogs"
+    - "{{ digdag_log_dir }}/tasklogs"
+    - "{{ digdag_config_dir }}"
+    
+- name: Ensure digdag are installed.
+  get_url:
+    url: https://dl.digdag.io/digdag-latest
+    dest: /usr/local/bin/digdag
+    mode: a+x
+
+- name: Configure digdag configuration.
+  template:
+    src: server.properties.j2
+    dest: "{{ digdag_config_dir }}/server.properties"
+    owner: "{{ digdag_user }}"
+    group: "{{ digdag_group }}"
+    mode: 0600
+
+- name: Configure log rotate configuration.
+  template:
+    src: digdag.logrotate.j2
+    dest: /etc/logrotate.d/digdag
+    owner: root
+    group: root
+
+- import_tasks: systemd.yml
+
+- import_tasks: firewalld.yml
+

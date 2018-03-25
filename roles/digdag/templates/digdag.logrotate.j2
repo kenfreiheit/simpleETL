@@ -1,0 +1,9 @@
+{{ digdag_log_dir }}/accesslogs/*.log {
+    create 0644 {{ digdag_group }} {{ digdag_user }} 
+    daily
+    rotate 10
+    missingok
+    notifempty
+    copytruncate
+    compress
+}

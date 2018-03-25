@@ -1,0 +1,12 @@
+---
+- name: restart digdag
+  systemd: 
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+    name: "{{ digdag_daemon }}"
+
+- name: reload firewalld
+  service: 
+    name: firewalld
+    state: restarted

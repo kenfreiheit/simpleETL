@@ -1,0 +1,7 @@
+# User and group
+embulk_group: embulk
+embulk_user: embulk
+
+# Directories
+embulk_dir: /opt/embulk
+embulk_plugin_dir: bundle

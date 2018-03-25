@@ -1,0 +1,17 @@
+- name: Configure digdag systemd.
+  template:
+    src: digdag.service.j2
+    dest: /etc/systemd/system/digdag.service
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart digdag
+
+- name: Ensure digdag is started and enabled on boot.
+  systemd: 
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+    name: "{{ digdag_daemon }}"
+
+

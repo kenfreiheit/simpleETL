@@ -1,0 +1,19 @@
+# User and group
+digdag_group: digdag
+digdag_user: digdag
+
+# Directories
+digdag_config_dir: /opt/digdag/conf.d
+digdag_log_dir: /opt/digdag/logs
+
+# Server properties
+digdag_server_database_type: postgresql
+digdag_server_database_user: digdag
+digdag_server_database_password:
+digdag_server_database_host: 127.0.0.1
+digdag_server_database_port: 5432
+digdag_server_database_database: digdag_db
+digdag_server_bind_ip: 
+
+digdag_daemon: digdag
+

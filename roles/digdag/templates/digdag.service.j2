@@ -1,0 +1,17 @@
+[Unit]
+Description={{ digdag_daemon }}
+
+[Service]
+Type=simple
+PIDFile=/run/digdag.pid
+ExecStart=/bin/bash -l -c '/usr/local/bin/digdag server --max-task-threads 2 --config {{ digdag_config_dir }}/server.properties -O {{ digdag_log_dir }}/tasklogs -A {{ digdag_log_dir }}/access_logs -L {{ digdag_log_dir }}/server.log -b {{ digdag_server_bind_ip }}'
+User={{ digdag_user }}
+Group={{ digdag_group }}
+Restart=always
+RestartSec=5
+KillMode=process
+TimeoutStopSec=1200
+SyslogIdentifier={{ digdag_daemon }}
+
+[Install]
+WantedBy=multi-user.target

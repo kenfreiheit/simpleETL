@@ -1,0 +1,8 @@
+- name: simpleETL
+  hosts: simpleETL
+  become: true
+  remote_user: 
+  roles:
+    - role: postgresql
+    - role: digdag
+    - role: embulk
